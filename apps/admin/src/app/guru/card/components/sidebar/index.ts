@@ -6,38 +6,28 @@ import {
   Input,
   TemplateRef,
   Directive,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  EventEmitter,
+  AfterViewInit
 } from '@angular/core';
 import { MatSidenav } from '@angular/material';
+import { isNullOrUndefined } from 'util';
 
 @Directive({ selector: '[guru-sidebar]' })
-export class GuruSidebarDirective {
+export class GuruSidebarDirective implements AfterViewInit {
   @Input('guru-sidebar') position: 'left' | 'right';
-  constructor(public template: TemplateRef<any>) {}
-}
+  @Input() mode?: 'push' | 'over' | 'side';
+  @Input() autoFocus?: boolean;
+  @Input() disableClose?: boolean;
+  @Input() opened?: boolean;
+  @Input() responsive?: boolean;
 
-@Component({
-  selector: 'guru-sidebar',
-  template: `
-    <ng-content></ng-content>
-  `,
-  host: {
-    class: 'guru-sidebar'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
-})
-export class GuruSidebar implements OnInit {
-  @Input('nav') nav: MatSidenav;
-  constructor(private cd: ChangeDetectorRef) {}
-  ngOnInit() {}
-
-  do(action: 'open' | 'close' | 'toggle') {
-    // OPEN SIDEBAR
-    if (action === 'open') this.nav.open();
-    // CLOSE SIDEBAR
-    if (action === 'close') this.nav.close();
-    // TOGGLE SIDEBAR
-    if (action === 'toggle') this.nav.toggle();
+  constructor(public template: TemplateRef<any>) {
+    this.mode = isNullOrUndefined(this.mode) ? 'side' : this.mode;
+    this.opened = isNullOrUndefined(this.opened) ? true : this.opened;
+    this.responsive = isNullOrUndefined(this.responsive) ? true : this.responsive;
+    this.autoFocus = isNullOrUndefined(this.autoFocus) ? true : this.autoFocus;
+    this.disableClose = isNullOrUndefined(this.disableClose) ? false : this.disableClose;
   }
+  ngAfterViewInit() {}
 }

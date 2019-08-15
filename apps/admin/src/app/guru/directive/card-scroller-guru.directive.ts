@@ -132,7 +132,6 @@ export class GuruScrollableCard implements OnInit, AfterViewInit, OnDestroy {
         debounceTime(150)
       )
       .subscribe(() => {
-        console.log('card-scroll-window-change');
         // Update the PerfectScrollbar
         this.update();
       });
@@ -277,7 +276,6 @@ export class GuruScrollableCard implements OnInit, AfterViewInit, OnDestroy {
 
     // Update the perfect-scrollbar
     this.ps.update();
-    console.log('updated');
   }
 
   /**

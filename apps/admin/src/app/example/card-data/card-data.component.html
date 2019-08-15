@@ -1,5 +1,5 @@
-<guru-card #card>
-  <ng-template guru-sidebar="left">
+<guru-card #card (sidebar_left_event)="sidebar_left_event($event)" (sidebar_right_event)="sidebar_right_event($event)">
+  <ng-template guru-sidebar="left" opened="true">
     <guru-header>
       <h1>Left</h1>
     </guru-header>
@@ -12,7 +12,7 @@
     </guru-content>
     <guru-footer></guru-footer>
   </ng-template>
-  <ng-template guru-sidebar="right">
+  <ng-template guru-sidebar="right" opened="true">
     <guru-header>Right</guru-header>
     <guru-content>
       <ul>
@@ -24,10 +24,10 @@
     <guru-footer></guru-footer>
   </ng-template>
   <guru-header>
-    <button mat-icon-button (click)="card.nav('left', 'toggle')">
+    <button mat-icon-button (click)="card.sidebar_left('toggle')">
       <mat-icon>menu</mat-icon>
     </button>
-    <button mat-icon-button (click)="card.nav('right', 'toggle')">
+    <button mat-icon-button (click)="card.sidebar_right('toggle')">
       <mat-icon>menu</mat-icon>
     </button>
   </guru-header>

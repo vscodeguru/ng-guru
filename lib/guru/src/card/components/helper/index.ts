@@ -13,28 +13,20 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class GuruHeader implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class GuruHeader {}
 
 @Component({
-  selector: 'guru-body',
+  selector: 'guru-content',
   template: `
     <ng-content></ng-content>
   `,
   host: {
-    class: 'guru-body'
+    class: 'guru-content'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class GuruContent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class GuruContent {}
 
 @Component({
   selector: 'guru-footer',
@@ -49,8 +41,4 @@ export class GuruContent implements OnInit {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class GuruFooter implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class GuruFooter {}

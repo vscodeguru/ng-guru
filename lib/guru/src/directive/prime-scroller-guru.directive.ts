@@ -19,7 +19,7 @@ import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
 import { isNullOrUndefined } from 'util';
-import { PrimeTableSchema } from './model/scroll.model';
+import { PrimeTableSchema, CardSchema } from './model/scroll.model';
 
 @Directive({
   // tslint:disable-next-line: directive-selector
@@ -43,11 +43,11 @@ export class GuruScrollablePrimeTable
   /**
    * Constructor
    *
-   * @param {ElementRef} _elementRef
-   * @param {SidebarGuruService} SidebarGuruService
-   * @param {Platform} _platform
-   * @param {Router} _router
-   * @param {Renderer2} _renderer
+   *  {ElementRef} _elementRef
+   *  {SidebarGuruService} SidebarGuruService
+   *  {Platform} _platform
+   *  {Router} _router
+   *  {Renderer2} _renderer
    */
   constructor(
     private _elementRef: ElementRef,
@@ -86,7 +86,7 @@ export class GuruScrollablePrimeTable
   /**
    * Perfect Scrollbar options
    *
-   * @param value
+   *  value
    */
   @Input()
   set options(value) {
@@ -111,7 +111,7 @@ export class GuruScrollablePrimeTable
   /**
    * Is enabled
    *
-   * @param {boolean | ""} value
+   *  {boolean | ""} value
    */
   // @Input('primeScrollGuru')
   set enabled(value: boolean | '') {
@@ -215,7 +215,6 @@ export class GuruScrollablePrimeTable
   /**
    * Initialize
    *
-   * @private
    */
   _init(): void {
     if (!isNullOrUndefined(this._element)) {
@@ -258,7 +257,6 @@ export class GuruScrollablePrimeTable
   /**
    * Destroy
    *
-   * @private
    */
   _destroy(): void {
     if (!this.isInitialized || !this.ps) {
@@ -276,7 +274,6 @@ export class GuruScrollablePrimeTable
   /**
    * Update scrollbars on window resize
    *
-   * @private
    */
   @HostListener('window:resize')
   _updateOnResize(): void {
@@ -323,7 +320,7 @@ export class GuruScrollablePrimeTable
   /**
    * Document click
    *
-   * @param {Event} event
+   *  {Event} event
    */
   @HostListener('document:click', ['$event'])
   documentClick(event: Event): void {
@@ -362,7 +359,7 @@ export class GuruScrollablePrimeTable
   /**
    * Returns the geometry of the scrollable element
    *
-   * @param prefix
+   *  prefix
    */
   geometry(prefix: string = 'scroll'): ScrollGuruGeometry {
     return new ScrollGuruGeometry(
@@ -376,7 +373,7 @@ export class GuruScrollablePrimeTable
   /**
    * Returns the position of the scrollable element
    *
-   * @param absolute
+   *  absolute
    */
   position(absolute: boolean = false): ScrollGuruPosition {
     if (!absolute && this.ps) {
@@ -389,9 +386,9 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to
    *
-   * @param x
-   * @param y
-   * @param speed
+   *  x
+   *  y
+   *  speed
    */
   scrollTo(x: number, y?: number, speed?: number): void {
     if (y == null && speed == null) {
@@ -410,8 +407,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to X
    *
-   * @param {number} x
-   * @param {number} speed
+   *  {number} x
+   *  {number} speed
    */
   scrollToX(x: number, speed?: number): void {
     this.animateScrolling('scrollLeft', x, speed);
@@ -420,8 +417,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to Y
    *
-   * @param {number} y
-   * @param {number} speed
+   *  {number} y
+   *  {number} speed
    */
   scrollToY(y: number, speed?: number): void {
     this.animateScrolling('scrollTop', y, speed);
@@ -430,8 +427,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to top
    *
-   * @param {number} offset
-   * @param {number} speed
+   *  {number} offset
+   *  {number} speed
    */
   scrollToTop(offset?: number, speed?: number): void {
     this.animateScrolling('scrollTop', offset || 0, speed);
@@ -440,8 +437,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to left
    *
-   * @param {number} offset
-   * @param {number} speed
+   *  {number} offset
+   *  {number} speed
    */
   scrollToLeft(offset?: number, speed?: number): void {
     this.animateScrolling('scrollLeft', offset || 0, speed);
@@ -450,8 +447,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to right
    *
-   * @param {number} offset
-   * @param {number} speed
+   *  {number} offset
+   *  {number} speed
    */
   scrollToRight(offset?: number, speed?: number): void {
     const left = this._element.scrollWidth - this._element.clientWidth;
@@ -461,8 +458,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to bottom
    *
-   * @param {number} offset
-   * @param {number} speed
+   *  {number} offset
+   *  {number} speed
    */
   scrollToBottom(offset?: number, speed?: number): void {
     const top = this._element.scrollHeight - this._element.clientHeight;
@@ -472,9 +469,9 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to element
    *
-   * @param qs
-   * @param offset
-   * @param speed
+   *  qs
+   *  offset
+   *  speed
    */
   scrollToElement(qs: string, offset?: number, speed?: number): void {
     const element = this._element.querySelector(qs);
@@ -504,9 +501,9 @@ export class GuruScrollablePrimeTable
   /**
    * Animate scrolling
    *
-   * @param target
-   * @param value
-   * @param speed
+   *  target
+   *  value
+   *  speed
    */
   animateScrolling(target: string, value: number, speed?: number): void {
     if (this._animation) {

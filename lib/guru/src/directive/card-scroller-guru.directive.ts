@@ -1,16 +1,11 @@
 import {
-  Directive,
-  AfterContentInit,
-  Renderer2,
-  ElementRef,
-  OnDestroy,
-  OnInit,
   AfterViewInit,
-  Input,
+  Directive,
+  ElementRef,
   HostListener,
-  ViewEncapsulation,
-  ChangeDetectionStrategy,
-  Component
+  Input,
+  OnDestroy,
+  OnInit
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Platform } from '@angular/cdk/platform';
@@ -18,43 +13,29 @@ import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
-import { isNullOrUndefined } from 'util';
-import { PrimeTableSchema } from './model/scroll.model';
 
 @Directive({
-  // tslint:disable-next-line: directive-selector
-  selector: '[GuruScrollablePrimeTable]'
+  selector: 'guru-content'
 })
-export class GuruScrollablePrimeTable
-  implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
+export class GuruScrollableCard implements OnInit, AfterViewInit, OnDestroy {
   isInitialized: boolean;
   isMobile: boolean;
   ps: PerfectScrollbar | any;
-  readonly waitTime = 600;
+
   // Private
   private _animation: number | null;
   private _enabled: boolean | '';
   private _debouncedUpdate: any;
   private _options: any;
   private _unsubscribeAll: Subject<any>;
-  private _element: any;
-  private _primeTable: PrimeTableSchema;
 
   /**
    * Constructor
    *
-   * @param {ElementRef} _elementRef
-   * @param {SidebarGuruService} SidebarGuruService
-   * @param {Platform} _platform
-   * @param {Router} _router
-   * @param {Renderer2} _renderer
+   *  {Platform} _platform
+   *  {Router} _router
    */
-  constructor(
-    private _elementRef: ElementRef,
-    private _platform: Platform,
-    private _router: Router,
-    private _renderer: Renderer2
-  ) {
+  constructor(public elementRef: ElementRef, private _platform: Platform, private _router: Router) {
     // Set the defaults
     this.isInitialized = false;
     this.isMobile = false;
@@ -62,21 +43,11 @@ export class GuruScrollablePrimeTable
     // Set the private defaults
     this._animation = null;
     this._enabled = false;
-    this._debouncedUpdate = _.debounce(this.update, this.waitTime);
+    this._debouncedUpdate = _.debounce(this.update, 150);
     this._options = {
       updateOnRouteChange: false
     };
     this._unsubscribeAll = new Subject();
-    // _SidebarGuruService.getLeftEvent().subscribe(data => {
-    //   if (data === 'afterOpen' || data == 'afterClose') {
-    //     this._debouncedUpdate();
-    //   }
-    // });
-    // _SidebarGuruService.getRightEvent().subscribe(data => {
-    //   if (data === 'afterOpen' || data == 'afterClose') {
-    //     this._debouncedUpdate();
-    //   }
-    // });
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -86,7 +57,7 @@ export class GuruScrollablePrimeTable
   /**
    * Perfect Scrollbar options
    *
-   * @param value
+   *  value
    */
   @Input()
   set options(value) {
@@ -111,9 +82,8 @@ export class GuruScrollablePrimeTable
   /**
    * Is enabled
    *
-   * @param {boolean | ""} value
+   *  {boolean | ""} value
    */
-  // @Input('primeScrollGuru')
   set enabled(value: boolean | '') {
     // If nothing is provided with the directive (empty string),
     // we will take that as a true
@@ -132,7 +102,9 @@ export class GuruScrollablePrimeTable
     // If enabled...
     if (this.enabled) {
       // Init the directive
-      this._init();
+      setTimeout(() => {
+        this._init();
+      });
     } else {
       // Otherwise destroy it
       this._destroy();
@@ -156,7 +128,7 @@ export class GuruScrollablePrimeTable
     fromEvent(window, 'resize')
       .pipe(
         takeUntil(this._unsubscribeAll),
-        debounceTime(this.waitTime)
+        debounceTime(150)
       )
       .subscribe(() => {
         // Update the PerfectScrollbar
@@ -167,34 +139,24 @@ export class GuruScrollablePrimeTable
   /**
    * After view init
    */
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    // Check if scrollbars enabled or not from the main config
+    this.enabled = true;
 
-  /**
-   * After content init
-   */
-  ngAfterContentInit(): void {
-    setTimeout(() => {
-      this._initElement();
-
-      // Check if scrollbars enabled or not from the main config
-      setTimeout(() => {
-        this.enabled = true;
-      });
-      // Scroll to the top on every route change
-      if (this.options.updateOnRouteChange) {
-        this._router.events
-          .pipe(
-            takeUntil(this._unsubscribeAll),
-            filter(event => event instanceof NavigationEnd)
-          )
-          .subscribe(() => {
-            setTimeout(() => {
-              this.scrollToTop();
-              this.update();
-            }, 0);
-          });
-      }
-    });
+    // Scroll to the top on every route change
+    if (this.options.updateOnRouteChange) {
+      this._router.events
+        .pipe(
+          takeUntil(this._unsubscribeAll),
+          filter(event => event instanceof NavigationEnd)
+        )
+        .subscribe(() => {
+          setTimeout(() => {
+            this.scrollToTop();
+            this.update();
+          }, 0);
+        });
+    }
   }
 
   /**
@@ -215,50 +177,46 @@ export class GuruScrollablePrimeTable
   /**
    * Initialize
    *
-   * @private
    */
   _init(): void {
-    if (!isNullOrUndefined(this._element)) {
-      // Return, if already initialized
-      if (this.isInitialized) {
-        return;
-      }
-
-      // // Check if is mobile
-      if (this._platform.ANDROID || this._platform.IOS) {
-        this.isMobile = true;
-      }
-
-      // Return if it's mobile
-      if (this.isMobile) {
-        // Return...
-        return;
-      }
-
-      // Set as initialized
-      this.isInitialized = true;
-
-      // Initialize the perfect-scrollbar
-      this.ps = new PerfectScrollbar(this._element, {
-        ...this.options
-      });
-      // Unbind 'keydown' events of PerfectScrollbar since it causes an extremely
-      // high CPU usage on Angular Material inputs.
-      // Loop through all the event elements of this PerfectScrollbar instance
-      this.ps.event.eventElements.forEach(eventElement => {
-        // If we hit to the element with a 'keydown' event...
-        if (typeof eventElement.handlers['keydown'] !== 'undefined') {
-          // Unbind it
-          eventElement.element.removeEventListener('keydown', eventElement.handlers['keydown'][0]);
-        }
-      });
+    // Return, if already initialized
+    if (this.isInitialized) {
+      return;
     }
+
+    // Check if is mobile
+    if (this._platform.ANDROID || this._platform.IOS) {
+      this.isMobile = true;
+    }
+
+    // Return if it's mobile
+    if (this.isMobile) {
+      // Return...
+      return;
+    }
+
+    // Set as initialized
+    this.isInitialized = true;
+
+    // Initialize the perfect-scrollbar
+    this.ps = new PerfectScrollbar(this.elementRef.nativeElement, {
+      ...this.options
+    });
+    // Unbind 'keydown' events of PerfectScrollbar since it causes an extremely
+    // high CPU usage on Angular Material inputs.
+    // Loop through all the event elements of this PerfectScrollbar instance
+    this.ps.event.eventElements.forEach(eventElement => {
+      // If we hit to the element with a 'keydown' event...
+      if (typeof eventElement.handlers['keydown'] !== 'undefined') {
+        // Unbind it
+        eventElement.element.removeEventListener('keydown', eventElement.handlers['keydown'][0]);
+      }
+    });
   }
 
   /**
    * Destroy
    *
-   * @private
    */
   _destroy(): void {
     if (!this.isInitialized || !this.ps) {
@@ -276,44 +234,10 @@ export class GuruScrollablePrimeTable
   /**
    * Update scrollbars on window resize
    *
-   * @private
    */
   @HostListener('window:resize')
   _updateOnResize(): void {
     this._debouncedUpdate();
-  }
-
-  _getHeight(_el: any) {
-    return parseInt(window.getComputedStyle(_el)['height'], null);
-  }
-  _getParentNode(_el: any) {
-    return this._renderer.parentNode(_el);
-  }
-  _getGrandParentNode(_el: any) {
-    return this._getParentNode(this._getParentNode(_el));
-  }
-  _initElement() {
-    this._primeTable = new PrimeTableSchema(
-      this._elementRef.nativeElement,
-      this._getParentNode(this._elementRef.nativeElement),
-      this._getGrandParentNode(this._elementRef.nativeElement)
-    );
-    this._element = this._primeTable.body._el;
-    let bodyHeight =
-      this._primeTable.parent._height -
-      (this._primeTable.header._height + this._primeTable.footer._height);
-
-    // bodyWidth = this._primeTable.parent._width;
-    // if (!isNullOrUndefined(this._primeTable.header._el))
-    //   this._renderer.setStyle(this._primeTable.header._el, 'width', bodyWidth + 'px');
-    // if (!isNullOrUndefined(this._primeTable.footer._el))
-    //   this._renderer.setStyle(this._primeTable.footer._el, 'width', bodyWidth + 'px');
-    if (!isNullOrUndefined(this._element)) {
-      // this._renderer.setAttribute(this._element, 'class', 'prime-content');
-      // this._renderer.setAttribute(this._primeTable.header._el, 'class', 'prime-header');
-      // this._renderer.setAttribute(this._primeTable.footer._el, 'class', 'prime-footer');
-      // this._renderer.setStyle(this._element, 'width', bodyWidth + 'px');
-    }
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -323,7 +247,7 @@ export class GuruScrollablePrimeTable
   /**
    * Document click
    *
-   * @param {Event} event
+   *  {Event} event
    */
   @HostListener('document:click', ['$event'])
   documentClick(event: Event): void {
@@ -341,15 +265,13 @@ export class GuruScrollablePrimeTable
   /**
    * Update the scrollbar
    */
-  update(): void {
+  public update(): void {
     if (!this.isInitialized) {
       return;
     }
-    setTimeout(() => {
-      this._initElement();
-      // Update the perfect-scrollbar
-      this.ps.update();
-    });
+
+    // Update the perfect-scrollbar
+    this.ps.update();
   }
 
   /**
@@ -362,36 +284,45 @@ export class GuruScrollablePrimeTable
   /**
    * Returns the geometry of the scrollable element
    *
-   * @param prefix
+   *  prefix
    */
-  geometry(prefix: string = 'scroll'): ScrollGuruGeometry {
-    return new ScrollGuruGeometry(
-      this._element[prefix + 'Left'],
-      this._element[prefix + 'Top'],
-      this._element[prefix + 'Width'],
-      this._element[prefix + 'Height']
+  geometry(prefix: string = 'scroll'): CardScrollerGuruGeometry {
+    console.log({
+      Left: this.elementRef.nativeElement[prefix + 'Left'],
+      Top: this.elementRef.nativeElement[prefix + 'Top'],
+      Width: this.elementRef.nativeElement[prefix + 'Width'],
+      Height: this.elementRef.nativeElement[prefix + 'Height']
+    });
+    return new CardScrollerGuruGeometry(
+      this.elementRef.nativeElement[prefix + 'Left'],
+      this.elementRef.nativeElement[prefix + 'Top'],
+      this.elementRef.nativeElement[prefix + 'Width'],
+      this.elementRef.nativeElement[prefix + 'Height']
     );
   }
 
   /**
    * Returns the position of the scrollable element
    *
-   * @param absolute
+   *  absolute
    */
-  position(absolute: boolean = false): ScrollGuruPosition {
+  position(absolute: boolean = false): CardScrollerGuruPosition {
     if (!absolute && this.ps) {
-      return new ScrollGuruPosition(this.ps.reach.x || 0, this.ps.reach.y || 0);
+      return new CardScrollerGuruPosition(this.ps.reach.x || 0, this.ps.reach.y || 0);
     } else {
-      return new ScrollGuruPosition(this._element.scrollLeft, this._element.scrollTop);
+      return new CardScrollerGuruPosition(
+        this.elementRef.nativeElement.scrollLeft,
+        this.elementRef.nativeElement.scrollTop
+      );
     }
   }
 
   /**
    * Scroll to
    *
-   * @param x
-   * @param y
-   * @param speed
+   *  x
+   *  y
+   *  speed
    */
   scrollTo(x: number, y?: number, speed?: number): void {
     if (y == null && speed == null) {
@@ -410,8 +341,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to X
    *
-   * @param {number} x
-   * @param {number} speed
+   *  {number} x
+   *  {number} speed
    */
   scrollToX(x: number, speed?: number): void {
     this.animateScrolling('scrollLeft', x, speed);
@@ -420,8 +351,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to Y
    *
-   * @param {number} y
-   * @param {number} speed
+   *  {number} y
+   *  {number} speed
    */
   scrollToY(y: number, speed?: number): void {
     this.animateScrolling('scrollTop', y, speed);
@@ -430,8 +361,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to top
    *
-   * @param {number} offset
-   * @param {number} speed
+   *  {number} offset
+   *  {number} speed
    */
   scrollToTop(offset?: number, speed?: number): void {
     this.animateScrolling('scrollTop', offset || 0, speed);
@@ -440,8 +371,8 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to left
    *
-   * @param {number} offset
-   * @param {number} speed
+   *  {number} offset
+   *  {number} speed
    */
   scrollToLeft(offset?: number, speed?: number): void {
     this.animateScrolling('scrollLeft', offset || 0, speed);
@@ -450,51 +381,53 @@ export class GuruScrollablePrimeTable
   /**
    * Scroll to right
    *
-   * @param {number} offset
-   * @param {number} speed
+   *  {number} offset
+   *  {number} speed
    */
   scrollToRight(offset?: number, speed?: number): void {
-    const left = this._element.scrollWidth - this._element.clientWidth;
+    const left =
+      this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.clientWidth;
     this.animateScrolling('scrollLeft', left - (offset || 0), speed);
   }
 
   /**
    * Scroll to bottom
    *
-   * @param {number} offset
-   * @param {number} speed
+   *  {number} offset
+   *  {number} speed
    */
   scrollToBottom(offset?: number, speed?: number): void {
-    const top = this._element.scrollHeight - this._element.clientHeight;
+    const top =
+      this.elementRef.nativeElement.scrollHeight - this.elementRef.nativeElement.clientHeight;
     this.animateScrolling('scrollTop', top - (offset || 0), speed);
   }
 
   /**
    * Scroll to element
    *
-   * @param qs
-   * @param offset
-   * @param speed
+   *  qs
+   *  offset
+   *  speed
    */
   scrollToElement(qs: string, offset?: number, speed?: number): void {
-    const element = this._element.querySelector(qs);
+    const element = this.elementRef.nativeElement.querySelector(qs);
 
     if (!element) {
       return;
     }
 
     const elementPos = element.getBoundingClientRect();
-    const scrollerPos = this._element.getBoundingClientRect();
+    const scrollerPos = this.elementRef.nativeElement.getBoundingClientRect();
 
-    if (this._element.classList.contains('ps--active-x')) {
-      const currentPos = this._element['scrollLeft'];
+    if (this.elementRef.nativeElement.classList.contains('ps--active-x')) {
+      const currentPos = this.elementRef.nativeElement['scrollLeft'];
       const position = elementPos.left - scrollerPos.left + currentPos;
 
       this.animateScrolling('scrollLeft', position + (offset || 0), speed);
     }
 
-    if (this._element.classList.contains('ps--active-y')) {
-      const currentPos = this._element['scrollTop'];
+    if (this.elementRef.nativeElement.classList.contains('ps--active-y')) {
+      const currentPos = this.elementRef.nativeElement['scrollTop'];
       const position = elementPos.top - scrollerPos.top + currentPos;
 
       this.animateScrolling('scrollTop', position + (offset || 0), speed);
@@ -504,9 +437,9 @@ export class GuruScrollablePrimeTable
   /**
    * Animate scrolling
    *
-   * @param target
-   * @param value
-   * @param speed
+   *  target
+   *  value
+   *  speed
    */
   animateScrolling(target: string, value: number, speed?: number): void {
     if (this._animation) {
@@ -515,13 +448,13 @@ export class GuruScrollablePrimeTable
     }
 
     if (!speed || typeof window === 'undefined') {
-      this._element[target] = value;
-    } else if (value !== this._element[target]) {
+      this.elementRef.nativeElement[target] = value;
+    } else if (value !== this.elementRef.nativeElement[target]) {
       let newValue = 0;
       let scrollCount = 0;
 
       let oldTimestamp = performance.now();
-      let oldValue = this._element[target];
+      let oldValue = this.elementRef.nativeElement[target];
 
       const cosParameter = (oldValue - value) / 2;
 
@@ -530,14 +463,14 @@ export class GuruScrollablePrimeTable
         newValue = Math.round(value + cosParameter + cosParameter * Math.cos(scrollCount));
 
         // Only continue animation if scroll position has not changed
-        if (this._element[target] === oldValue) {
+        if (this.elementRef.nativeElement[target] === oldValue) {
           if (scrollCount >= Math.PI) {
             this.animateScrolling(target, value, 0);
           } else {
-            this._element[target] = newValue;
+            this.elementRef.nativeElement[target] = newValue;
 
             // On a zoomed out page the resulting offset may differ
-            oldValue = this._element[target];
+            oldValue = this.elementRef.nativeElement[target];
             oldTimestamp = newTimestamp;
 
             this._animation = window.requestAnimationFrame(step);
@@ -550,7 +483,7 @@ export class GuruScrollablePrimeTable
   }
 }
 
-class ScrollGuruGeometry {
+export class CardScrollerGuruGeometry {
   public x: number;
   public y: number;
 
@@ -565,7 +498,7 @@ class ScrollGuruGeometry {
   }
 }
 
-class ScrollGuruPosition {
+export class CardScrollerGuruPosition {
   public x: number | 'start' | 'end';
   public y: number | 'start' | 'end';
 

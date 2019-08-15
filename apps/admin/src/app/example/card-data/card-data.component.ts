@@ -27,4 +27,6 @@ export class CardDataComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     // this.navRight.mode = 'side';
   }
+  sidebar_left_event(data) {}
+  sidebar_right_event(data) {}
 }
