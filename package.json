@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:admin": "ng build admin",
-    "build:ngGuru": "ng build ng-guru",
+    "build:guru": "ng build guru",
     "serve:admin": "ng serve admin"
   },
   "private": true,

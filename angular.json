@@ -3,28 +3,24 @@
   "version": 1,
   "newProjectRoot": "apps",
   "projects": {
-    "ng-guru": {
-      "root": "lib/ng-guru",
-      "sourceRoot": "lib/ng-guru/src",
+    "guru": {
+      "root": "lib/guru",
+      "sourceRoot": "lib/guru/src",
       "projectType": "library",
       "prefix": "guru",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "lib/ng-guru/tsconfig.lib.json",
-            "project": "lib/ng-guru/ng-package.json"
+            "tsConfig": "lib/guru/tsconfig.lib.json",
+            "project": "lib/guru/ng-package.json"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "lib/ng-guru/tsconfig.lib.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["lib/guru/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -37,25 +33,38 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
+          "changeDetection": "OnPush",
+          "inlineTemplate": false,
+          "inlineStyle": false,
+          "viewEncapsulation": "None",
+          "spec": false,
           "skipTests": true
         },
         "@schematics/angular:class": {
-          "skipTests": true
+          "skipTests": true,
+          "spec": false
         },
+
         "@schematics/angular:directive": {
-          "skipTests": true
+          "skipTests": true,
+          "spec": false
         },
         "@schematics/angular:guard": {
-          "skipTests": true
+          "skipTests": true,
+          "spec": false
         },
         "@schematics/angular:module": {
-          "skipTests": true
+          "skipTests": true,
+          "commonModule": true,
+          "spec": false
         },
         "@schematics/angular:pipe": {
-          "skipTests": true
+          "skipTests": true,
+          "spec": false
         },
         "@schematics/angular:service": {
-          "skipTests": true
+          "skipTests": true,
+          "spec": false
         }
       },
       "architect": {
@@ -67,10 +76,7 @@
             "main": "apps/admin/src/main.ts",
             "polyfills": "apps/admin/src/polyfills.ts",
             "tsConfig": "apps/admin/tsconfig.app.json",
-            "assets": [
-              "apps/admin/src/favicon.ico",
-              "apps/admin/src/assets"
-            ],
+            "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/admin/src/styles.scss"
@@ -134,22 +140,14 @@
               "apps/admin/src/styles.scss"
             ],
             "scripts": [],
-            "assets": [
-              "apps/admin/src/favicon.ico",
-              "apps/admin/src/assets"
-            ]
+            "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "apps/admin/tsconfig.app.json",
-              "apps/admin/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["apps/admin/tsconfig.app.json", "apps/admin/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
