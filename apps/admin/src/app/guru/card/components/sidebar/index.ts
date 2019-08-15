@@ -7,13 +7,18 @@ import {
   TemplateRef,
   Directive
 } from '@angular/core';
+import { MatSidenav } from '@angular/material';
+
+@Directive({ selector: '[guru-sidebar]' })
+export class GuruSidebarDirective {
+  @Input('guru-sidebar') position: 'left' | 'right';
+  constructor(public template: TemplateRef<any>) {}
+}
 
 @Component({
   selector: 'guru-sidebar',
   template: `
-    <ng-content select="guru-header"></ng-content>
-    <ng-content select="guru-content"></ng-content>
-    <ng-content select="guru-footer"></ng-content>
+    <ng-content></ng-content>
   `,
   host: {
     class: 'guru-sidebar'
@@ -22,7 +27,7 @@ import {
   encapsulation: ViewEncapsulation.None
 })
 export class GuruSidebar implements OnInit {
-  @Input('position') position: 'left' | 'right' = 'left';
+  @Input('nav') nav: MatSidenav;
   constructor() {}
   ngOnInit() {}
 }

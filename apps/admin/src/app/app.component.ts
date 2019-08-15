@@ -1,10 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'adm-root',
   templateUrl: './app.component.html',
   styles: []
 })
-export class AppComponent {
-  title = 'admin';
+export class AppComponent implements AfterViewInit {
+  title = 'ngGuru';
+  public lst: any[] = [];
+  public lst1: any[] = [];
+  items = [];
+  constructor(private cd: ChangeDetectorRef) {
+    for (let index = 1; index < 1000; index++) {
+      this.items.push(index);
+    }
+    for (let index = 1; index <= 8; index++) {
+      const element = index;
+      this.lst.push(element);
+    }
+    for (let index = 1; index <= 100; index++) {
+      const element = index;
+      this.lst1.push(element);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // this.navRight.mode = 'side';
+  }
 }

@@ -1,4 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+  Input
+} from '@angular/core';
 
 @Component({
   selector: 'guru-header',

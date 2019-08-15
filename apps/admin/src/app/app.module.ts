@@ -1,15 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GuruCardModule } from 'apps/admin/src/app/card';
+import { RouterModule, Routes } from '@angular/router';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { TableModule } from 'primeng/table';
+import { GuruCardModule } from './guru/card';
+import { GuruDirectiveModule } from './guru/directive';
 // import { NgGuruCardModule } from '@ng-guru/card';
-
+const routes: Routes = [];
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, GuruCardModule],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes),
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    TableModule,
+
+    GuruCardModule,
+    GuruDirectiveModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
