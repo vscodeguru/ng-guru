@@ -1,0 +1,38 @@
+<guru-card #card>
+  <ng-template guru-sidebar="left">
+    <guru-header>
+      <h1>Left</h1>
+    </guru-header>
+    <guru-content>
+      <ul>
+        <ng-template ngFor let-item [ngForOf]="items" let-i="index">
+          <li>{{ item }}</li>
+        </ng-template>
+      </ul>
+    </guru-content>
+    <guru-footer></guru-footer>
+  </ng-template>
+  <ng-template guru-sidebar="right">
+    <guru-header>Right</guru-header>
+    <guru-content>
+      <ul>
+        <ng-template ngFor let-item [ngForOf]="items" let-i="index">
+          <li>{{ item }}</li>
+        </ng-template>
+      </ul>
+    </guru-content>
+    <guru-footer></guru-footer>
+  </ng-template>
+  <guru-header>
+    <button mat-icon-button (click)="card.nav('left', 'toggle')">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button mat-icon-button (click)="card.nav('right', 'toggle')">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </guru-header>
+  <guru-content>
+    <ng-content></ng-content>
+  </guru-content>
+  <guru-footer></guru-footer>
+</guru-card>

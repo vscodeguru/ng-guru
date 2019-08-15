@@ -5,7 +5,8 @@ import {
   ViewEncapsulation,
   Input,
   TemplateRef,
-  Directive
+  Directive,
+  ChangeDetectorRef
 } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 
@@ -28,6 +29,15 @@ export class GuruSidebarDirective {
 })
 export class GuruSidebar implements OnInit {
   @Input('nav') nav: MatSidenav;
-  constructor() {}
+  constructor(private cd: ChangeDetectorRef) {}
   ngOnInit() {}
+
+  do(action: 'open' | 'close' | 'toggle') {
+    // OPEN SIDEBAR
+    if (action === 'open') this.nav.open();
+    // CLOSE SIDEBAR
+    if (action === 'close') this.nav.close();
+    // TOGGLE SIDEBAR
+    if (action === 'toggle') this.nav.toggle();
+  }
 }

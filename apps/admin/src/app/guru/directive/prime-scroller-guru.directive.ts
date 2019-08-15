@@ -7,7 +7,10 @@ import {
   OnInit,
   AfterViewInit,
   Input,
-  HostListener
+  HostListener,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  Component
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Platform } from '@angular/cdk/platform';
@@ -291,29 +294,26 @@ export class GuruScrollablePrimeTable
     return this._getParentNode(this._getParentNode(_el));
   }
   _initElement() {
-    let bodyHeight = 0;
-    let bodyWidth = 0;
-
     this._primeTable = new PrimeTableSchema(
       this._elementRef.nativeElement,
       this._getParentNode(this._elementRef.nativeElement),
       this._getGrandParentNode(this._elementRef.nativeElement)
     );
     this._element = this._primeTable.body._el;
-    bodyHeight =
+    let bodyHeight =
       this._primeTable.parent._height -
       (this._primeTable.header._height + this._primeTable.footer._height);
 
-    bodyWidth = this._primeTable.parent._width;
-    // bodyWidth = this.primeTable.grandParent._width;
-    if (!isNullOrUndefined(this._primeTable.header._el))
-      this._renderer.setStyle(this._primeTable.header._el, 'width', bodyWidth + 'px');
-    if (!isNullOrUndefined(this._primeTable.footer._el))
-      this._renderer.setStyle(this._primeTable.footer._el, 'width', bodyWidth + 'px');
-    // this._renderer.setStyle(this._element, 'width', bodyWidth + 'px');
+    // bodyWidth = this._primeTable.parent._width;
+    // if (!isNullOrUndefined(this._primeTable.header._el))
+    //   this._renderer.setStyle(this._primeTable.header._el, 'width', bodyWidth + 'px');
+    // if (!isNullOrUndefined(this._primeTable.footer._el))
+    //   this._renderer.setStyle(this._primeTable.footer._el, 'width', bodyWidth + 'px');
     if (!isNullOrUndefined(this._element)) {
-      this._renderer.setStyle(this._element, 'height', bodyHeight + 'px');
-      this._renderer.setStyle(this._element, 'width', bodyWidth + 'px');
+      // this._renderer.setAttribute(this._element, 'class', 'prime-content');
+      // this._renderer.setAttribute(this._primeTable.header._el, 'class', 'prime-header');
+      // this._renderer.setAttribute(this._primeTable.footer._el, 'class', 'prime-footer');
+      // this._renderer.setStyle(this._element, 'width', bodyWidth + 'px');
     }
   }
 

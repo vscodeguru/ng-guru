@@ -8,14 +8,19 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { TableModule } from 'primeng/table';
 import { GuruCardModule } from './guru/card';
 import { GuruDirectiveModule } from './guru/directive';
+import { MatButtonModule, MatIconModule } from '@angular/material';
+import { PrimeDataComponent } from './example/prime-data/prime-data.component';
+import { CardDataComponent } from './example/card-data/card-data.component';
 // import { NgGuruCardModule } from '@ng-guru/card';
 const routes: Routes = [];
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, CardDataComponent, PrimeDataComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
+    MatButtonModule,
+    MatIconModule,
     FlexLayoutModule,
     TableModule,
 

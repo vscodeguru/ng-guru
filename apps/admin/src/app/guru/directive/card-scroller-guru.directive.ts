@@ -37,7 +37,6 @@ export class GuruScrollableCard implements OnInit, AfterViewInit, OnDestroy {
    * @param {Router} _router
    */
   constructor(public elementRef: ElementRef, private _platform: Platform, private _router: Router) {
-    console.log('hai');
     // Set the defaults
     this.isInitialized = false;
     this.isMobile = false;
@@ -133,6 +132,7 @@ export class GuruScrollableCard implements OnInit, AfterViewInit, OnDestroy {
         debounceTime(150)
       )
       .subscribe(() => {
+        console.log('card-scroll-window-change');
         // Update the PerfectScrollbar
         this.update();
       });
@@ -270,13 +270,14 @@ export class GuruScrollableCard implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Update the scrollbar
    */
-  update(): void {
+  public update(): void {
     if (!this.isInitialized) {
       return;
     }
 
     // Update the perfect-scrollbar
     this.ps.update();
+    console.log('updated');
   }
 
   /**

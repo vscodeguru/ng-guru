@@ -22,6 +22,29 @@ adm-root {
   flex: 1 1 auto;
 }
 
+body:not(.is-mobile) {
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  ::-webkit-scrollbar:hover {
+    background-color: red !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    box-shadow: inset 0 0 0 12px rgba(0, 0, 0, 0.37);
+    border-radius: 12px;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    box-shadow: inset 0 0 0 12px rgba(0, 0, 0, 0.54);
+    border-radius: 12px;
+  }
+}
+
 .ps {
   position: relative;
 
@@ -139,4 +162,97 @@ p-table.no-outter-border {
       }
     }
   }
+}
+
+@mixin guru-fill() {
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
+  display: flex;
+}
+
+@mixin scrollable-prime-table() {
+  @include guru-fill();
+  .ui-table {
+    @include guru-fill();
+    .ui-table-scrollable-wrapper {
+      @include guru-fill();
+      .ui-table-scrollable-view {
+        position: relative;
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-flex: 1;
+        flex: 1 1 0%;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        min-width: 0;
+        .ui-table-scrollable-header {
+          position: relative;
+          border-bottom: 1px solid #c9c9c9;
+          display: flex;
+          flex: 0 0 auto;
+          z-index: 4;
+          min-height: 34px;
+        }
+        .ui-table-scrollable-body {
+          position: relative;
+          display: -webkit-box;
+          display: flex;
+          -webkit-box-flex: 1;
+          flex: 1 1 0%;
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+          flex-direction: column;
+          overflow-x: hidden;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        .ui-table-scrollable-footer {
+          // position: relative;
+          border-bottom: 1px solid #c9c9c9;
+          display: flex;
+          flex: 0 0 auto;
+          z-index: 4;
+          min-height: 34px;
+        }
+      }
+    }
+  }
+}
+[guruscrollableprimetable] {
+  @include guru-fill();
+  p-table {
+    @include scrollable-prime-table();
+  }
+}
+p-table[guruscrollableprimetable] {
+  @include scrollable-prime-table();
+}
+
+.fill {
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
+  display: flex;
+}
+.prime-header {
+  position: relative;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-flex: 0;
+  flex: 0 0 auto;
+  z-index: 4;
+}
+.prime-content {
+  height: 100%;
+}
+.prime-footer {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-flex: 0;
+  flex: 0 0 auto;
+  z-index: 4;
 }

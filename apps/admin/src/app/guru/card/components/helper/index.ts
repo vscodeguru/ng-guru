@@ -3,8 +3,11 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   ViewEncapsulation,
-  Input
+  Input,
+  ContentChildren,
+  QueryList
 } from '@angular/core';
+import { GuruScrollablePrimeTable } from 'apps/admin/src/app/guru/directive/prime-scroller-guru.directive';
 
 @Component({
   selector: 'guru-header',
@@ -19,11 +22,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class GuruHeader implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class GuruHeader {}
 
 @Component({
   selector: 'guru-content',
@@ -36,11 +35,7 @@ export class GuruHeader implements OnInit {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class GuruContent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class GuruContent {}
 
 @Component({
   selector: 'guru-footer',
@@ -55,8 +50,4 @@ export class GuruContent implements OnInit {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class GuruFooter implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class GuruFooter {}
