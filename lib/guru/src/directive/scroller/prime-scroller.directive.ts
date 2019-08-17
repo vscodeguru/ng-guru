@@ -7,10 +7,7 @@ import {
   OnInit,
   AfterViewInit,
   Input,
-  HostListener,
-  ViewEncapsulation,
-  ChangeDetectionStrategy,
-  Component
+  HostListener
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Platform } from '@angular/cdk/platform';
@@ -19,7 +16,7 @@ import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
 import { isNullOrUndefined } from 'util';
-import { PrimeTableSchema, CardSchema } from './model/scroll.model';
+import { PrimeTableSchema } from './model/scroll.model';
 
 @Directive({
   // tslint:disable-next-line: directive-selector

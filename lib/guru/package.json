@@ -1,5 +1,5 @@
 {
-  "name": "guru",
+  "name": "@guru/core",
   "version": "7.0.1",
   "peerDependencies": {
     "@angular/common": "^7.2.0",

@@ -17,7 +17,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import * as _ from 'lodash';
 import { isNullOrUndefined } from 'util';
-import { GuruSidebarDirective } from 'lib/guru/src/card/components/sidebar';
+import { GuruSidebarDirective } from 'lib/guru/src/card/helper';
 
 @Component({
   selector: 'guru-card',

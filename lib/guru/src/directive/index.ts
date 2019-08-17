@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { GuruScrollableCard } from 'lib/guru/src/directive/card-scroller-guru.directive';
-import { GuruScrollablePrimeTable } from 'lib/guru/src/directive/prime-scroller-guru.directive';
-// import { NgGuruCardModule } from '@ng-guru/card';
+import { GuruScrollableCard, GuruScrollablePrimeTable } from 'lib/guru/src/directive/scroller';
 @NgModule({
   declarations: [GuruScrollableCard, GuruScrollablePrimeTable],
   imports: [BrowserModule, RouterModule],

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build guru && npm install @guru/core && ng build admin",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -25,6 +25,7 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+    // "@guru/core": "file:dist/@guru/core",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "perfect-scrollbar": "^1.4.0",
